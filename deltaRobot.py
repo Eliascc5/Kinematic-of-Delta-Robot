@@ -12,6 +12,7 @@ import matplotlib.pyplot as plt
 import math
 
 #Variables globales
+
 RAD_TO_DEF = 180/math.pi
 DEG_TO_RAD = math.pi/180
 
@@ -52,18 +53,22 @@ class RobotDelta ():
         
     def forward_Kinematics(self,theta1, theta2,theta3):
         
-        L1=np.array([0,-self.L*math.cos(theta1),-self.L*math.sin(theta1)])
-        L2=np.array([(math.sqrt(3)/2)*self.L*math.cos(theta2),0.5*self.L*math.cos(theta2),-self.L*math.sin(theta2)])
-        L3=np.array([-(math.sqrt(3)/2)*self.L*math.cos(theta3),0.5*self.L*math.cos(theta3),-self.L*math.sin(theta3)])
+        # L1=np.array([0,-self.L*math.cos(theta1),-self.L*math.sin(theta1)])
+        # L2=np.array([(math.sqrt(3)/2)*self.L*math.cos(theta2),0.5*self.L*math.cos(theta2),-self.L*math.sin(theta2)])
+        # L3=np.array([-(math.sqrt(3)/2)*self.L*math.cos(theta3),0.5*self.L*math.cos(theta3),-self.L*math.sin(theta3)])
         
         
         A1=np.array([0,-self.wb-self.L*math.cos(theta1),-self.L*math.sin(theta1)])
         A2=np.array([(math.sqrt(3)/2)*(self.wb+self.L*math.cos(theta2)),0.5*(self.wb+self.L*math.cos(theta2)),-self.L*math.sin(theta2)])
         A3=np.array([-(math.sqrt(3)/2)*(self.wb+self.L*math.cos(theta3)),0.5*(self.wb+self.L*math.cos(theta3)),-self.L*math.sin(theta3)])
         
+        #Desplazamiento del centro de las tres esferas. Para lograr la interseccion un punto
+        
         A1v = A1-self.P1
         A2v = A2-self.P2
         A3v = A3-self.P3
+        
+        #Centro de las tres esferas
         
         x1 = A1v[0]
         x2 = A2v[0]
@@ -153,6 +158,7 @@ class RobotDelta ():
             z_positive=a6*y_positive+a7
             z_negative=a6*y_negative+a7
             
+            #Ver que x e y son validos
             
             print('y_positive',y_positive)
             print('y_negative',y_negative)
@@ -160,13 +166,11 @@ class RobotDelta ():
             print('x_positive',x_positive)
             print('x_negative',x_negative)
             print("--------------")
-            print('z_positive',z_positive)
-            print('z_negative',z_negative)
+            print('z_positive (INVALIDA)',z_positive)
+            print('z_negative (VALIDA)',z_negative)
     
     def inverse_Kinematics(self,x,y,z):
         
-     
-        cord=np.matrix([[x],[y],[z]])     #Just to test
         
         E1=2*self.L*(y+self.a)
         F1=2*z*self.L
@@ -190,7 +194,7 @@ class RobotDelta ():
         t3_negative=(-F3-math.sqrt(abs(pow(E3,2)+pow(F3,2)-pow(G3,2))))/(G3-E3)
 
         #TO DO:  Analysis of the multiple solutions  
-        #If you want to test the forward kinematic model, you have to comment these three lines
+        
         
         theta1_p=2*math.atan(t1_positive)
         theta1 = theta1_n=(2*math.atan(t1_negative))
@@ -203,13 +207,13 @@ class RobotDelta ():
         
 
                 
-        print("theta1 positive:",theta1_p * RAD_TO_DEF)
+        # print("theta1 positive:",theta1_p * RAD_TO_DEF)
         print("theta1 negative:",theta1_n * RAD_TO_DEF)     #kinked out solution
         print("--------------")
-        print("theta2 positive:",theta2_p * RAD_TO_DEF)
+        # print("theta2 positive:",theta2_p * RAD_TO_DEF)
         print("theta2 negative:",theta2_n * RAD_TO_DEF)     #kinked out solution
         print("--------------")
-        print("theta3 positive:",theta3_p * RAD_TO_DEF)
+        # print("theta3 positive:",theta3_p * RAD_TO_DEF)
         print("theta3 negative:",theta3_n * RAD_TO_DEF)     #kinked out solution   
 
 
@@ -225,9 +229,9 @@ if __name__ == '__main__':
     
     # End effector coordinates
     
-    # x=0.0
-    # y=0.0
-    # z=-1.5138166732618923
+    # x = 0.0
+    # y = 0.0
+    # z = -1.5138166732618923
         
     #Modify Z within the range [-0.9; -1.6]  
     #At maximum depth the radius (x, y) is 0.2 [m]
