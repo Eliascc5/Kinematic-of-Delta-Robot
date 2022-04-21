@@ -24,9 +24,9 @@ class RobotDelta ():
         #Parametros costructivod
         
         #Longitudes del robot comercial : ABB FlexPicker IRB 360-1/1600
- 
-        self.Sb=0.567            #Base equilateral triangle side
-        self.Sp=0.076            #Platform equilateral triangle side
+        #All constants are in meters
+        self.Sb=0.567             #Base equilateral triangle side
+        self.Sp=0.076             #Platform equilateral triangle side
         
         self.L = 0.524            #Upper legs length
         self.l = 1.244            #Lower legs parallelogram length
@@ -87,7 +87,7 @@ class RobotDelta ():
         
         if z1==z2 or z2==z3 or z1==z3:
         
-            print('dos o tres Z iguales') 
+            print('CASO: dos o tres z iguales:') 
             
             a = 2*(x3-x1)
             b = 2*(y3-y1)
@@ -101,8 +101,8 @@ class RobotDelta ():
             x = (c*e-b*f)/(a*e-b*d)
             y = (a*f-c*d)/(a*e-b*d)
             
-            print('Valor de x para cuando z son iguales: ', x)
-            print('Valor de y para cuando z son iguales: ', y)
+            print('x: ', x)
+            print('y: ', y)
             
             #Calculamos los dos valores de z
             
@@ -115,9 +115,17 @@ class RobotDelta ():
             
             z_positive=(-B+math.sqrt((pow(B,2)-4*A*C)))/(2*A)
             z_negative=(-B-math.sqrt((pow(B,2)-4*A*C)))/(2*A)
+            
                      
-            print('z positivo (INVALIDO) :', z_positive)
-            print('z negativo (VALIDO) :', z_negative)
+            # print('z positivo (INVALIDO) :', z_positive)
+            # print('z negativo (VALIDO) :', z_negative)
+            
+            z = z_negative
+            
+            print('z:', z)
+            
+        
+        
         else:
             #Algortimo : Punto de interseccion de 3 esferas  
             
@@ -166,8 +174,15 @@ class RobotDelta ():
             print('x_positive',x_positive)
             print('x_negative',x_negative)
             print("--------------")
-            print('z_positive (INVALIDA)',z_positive)
+            # print('z_positive (INVALIDA)',z_positive)
             print('z_negative (VALIDA)',z_negative)
+            
+            return
+        
+        
+        print('Fin de la funcion Cinematica Directa')
+        
+        return x ,y, z
     
     def inverse_Kinematics(self,x,y,z):
         
@@ -205,17 +220,22 @@ class RobotDelta ():
         theta3_p=2*math.atan(t3_positive)
         theta3 = theta3_n=(2*math.atan(t3_negative))
         
-
+        th1 = theta1_n * RAD_TO_DEF
+        
+        th2 = theta2_n * RAD_TO_DEF
+        
+        th3 = theta3_n * RAD_TO_DEF
                 
         # print("theta1 positive:",theta1_p * RAD_TO_DEF)
-        print("theta1 negative:",theta1_n * RAD_TO_DEF)     #kinked out solution
+        print("theta1 :",theta1_n * RAD_TO_DEF)     #kinked out solution
         print("--------------")
         # print("theta2 positive:",theta2_p * RAD_TO_DEF)
-        print("theta2 negative:",theta2_n * RAD_TO_DEF)     #kinked out solution
+        print("theta2 :",theta2_n * RAD_TO_DEF)     #kinked out solution
         print("--------------")
         # print("theta3 positive:",theta3_p * RAD_TO_DEF)
-        print("theta3 negative:",theta3_n * RAD_TO_DEF)     #kinked out solution   
-
+        print("theta3 :",theta3_n * RAD_TO_DEF)     #kinked out solution   
+        
+        return th1,th2,th3
 
 
 if __name__ == '__main__':
@@ -223,19 +243,97 @@ if __name__ == '__main__':
     Robot=RobotDelta()
     
     #Put it in radians
-    theta1 = 0*DEG_TO_RAD
-    theta2 = 10*DEG_TO_RAD
-    theta3 = 20*DEG_TO_RAD
+    # theta1 = 0*DEG_TO_RAD
+    # theta2 = 0*DEG_TO_RAD
+    # theta3 = 0*DEG_TO_RAD
+        
+    # Robot.forward_Kinematics(theta1, theta2, theta3) 
+    
+    
+    
     
     # End effector coordinates
+    #Modify Z within the range [-0.842 ; -1.6] 
     
     # x = 0.0
     # y = 0.0
-    # z = -1.5138166732618923
+    # z = -1.06
         
-    #Modify Z within the range [-0.9; -1.6]  
-    #At maximum depth the radius (x, y) is 0.2 [m]
+     
+    # r = 0.5
+    # x = np.linspace(0,r,10)
+    # y = np.sqrt(-x**2+r**2)-0.5
+
+    # plt.figure()
+    # plt.plot(x,y)
+    # plt.title('Trayectoria cartesiana para Z cte.')
+    
+    # plt.ylabel('Y')
+    # plt.xlabel('X')
+    # plt.show()
+    
+
+
+    
+    fig = plt.figure()
+    ax = fig.add_subplot(111, projection='3d')
+    
+    theta_max = -1.3
+    theta = np.linspace(-1, theta_max, 1000)
+    z = theta
+    x =  np.sin(theta*np.pi*10)*0.6
+    y =  np.cos(theta*np.pi*10)*0.6
+    ax.plot(x, y, z, 'b', lw=2)
+
+    # plt.show()
+
+
+    
+    angle1 = []
+    angle2 = []
+    angle3 = []
+    
+    i=0
+    
+    for i in range(len(x)):
+        
+        th1,th2,th3 = Robot.inverse_Kinematics(x[i], y[i], z[i])
+        angle1.append(th1)
+        angle2.append(th2)
+        angle3.append(th3)
+        
+    
+        
+    max1 = max(angle1)
+    min1 = min(angle1)
+    
+    max2 = max(angle2)
+    min2 = min(angle2)
+    
+    max3 = max(angle3)
+    min3 = min(angle3)
+    
+
+        
+    plt.figure()
+    plt.plot(angle1,label ='theta1 ')
+    plt.plot(angle2,label ='theta2 ')
+    plt.plot(angle3,label ='theta3 ')
+    plt.axhline(y = -30, color='r', linestyle='-')
+    plt.axhline(y = 60, color='r', linestyle='-')
+    plt.legend()
+    plt.ylabel('Angulos en grados')
+    plt.xlabel('paso (resolucion en coord. cartesianas)')
+    
+    plt.title('Coordenadas articulares')
+        
+
+    plt.show()
+
+
+
+
     
     
-    Robot.forward_Kinematics(theta1, theta2, theta3)    
-    # Robot.inverse_Kinematics(x, y, z)
+    
+    
