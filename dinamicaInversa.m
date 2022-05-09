@@ -7,7 +7,8 @@
 % l_ = 1.244
 % h = 0.131
 
-syms tita1 tita1d tita2 tita2d tita3 tita3d x y z xd yd zd a b c L Lc1 Lc2 Lc3 l_2 m1 m2 m3 I1 I2 g;
+syms t
+syms tita1(t) tita1d(t) tita2(t) tita2d(t) tita3(t) tita3d(t) x(t) y(t) z(t) xd(t) yd(t) zd(t) a b c L  l_2 m1 m2 m3 I1 I2 g;
 
 %% posición centro de gravedad articulación 1
 % ver si está en la mitad o no, hay que cambiar el 1/2
@@ -49,7 +50,9 @@ l3 = [x + sqrt(3)/2 * L * cos(tita3) - b;
     z + L * sin(tita3)];
 
 %% veocidad efector final
-p = [x;y;z];
+p = [x;
+     y;
+     z];
 
 pd = [xd;
       yd;
@@ -72,13 +75,13 @@ vc22 = pd - cross(w22,l2)/2;
 vc23 = pd - cross(w23,l3)/2;
 
 %% Energía cinética
-K11 = 1/2 * m1 * tita1d^2 * Lc1.^2 + 1/2 * I1 * tita1d^2;
-K12 = 1/2 * m1 * tita2d^2 * Lc2.^2 + 1/2 * I1 * tita2d^2;
-K13 = 1/2 * m1 * tita3d^2 * Lc3.^2 + 1/2 * I1 * tita3d^2;
+K11 = 1/2 * (m1 * Lc1.^2 + I1) * tita1d^2;
+K12 = 1/2 * (m1 * Lc2.^2 + I1) * tita2d^2;
+K13 = 1/2 * (m1 * Lc3.^2 + I1) * tita3d^2;
 
-K21 = 1/2 * m2 * vc21.^2 + 1/2 * I2 * w21.^2;
-K22 = 1/2 * m2 * vc22.^2 + 1/2 * I2 * w22.^2;
-K23 = 1/2 * m2 * vc23.^2 + 1/2 * I2 * w23.^2;
+K21 = 1/2 * (m2 * vc21.^2 + I2 * w21.^2);
+K22 = 1/2 * (m2 * vc22.^2 + I2 * w22.^2);
+K23 = 1/2 * (m2 * vc23.^2 + I2 * w23.^2);
 
 Kp = 1/2 * m3 * pd.^2;
 
@@ -100,6 +103,33 @@ Up = m3 * g * p(3);
 U  =  Up + U11 + U12 + U13 + U21 + U22 + U23;
 
 %% Lagrangiano
+%Coordenadas generalizadas
+% Px,Py,Pz, tita1, tita2, tita3
 
 L = K-U;
 
+dLdPx = diff(L,x);
+dLdPy = diff(L,y);
+dLdPz = diff(L,z);
+
+dLdTita1 = diff(L,tita1);
+dLdTita2 = diff(L,tita2);
+dLdTita3 = diff(L,tita3);
+
+dLdTita1d = diff(L,tita1d);
+dLdTita2d = diff(L,tita2d);
+dLdTita3d = diff(L,tita3d);
+
+dLdPxd = diff(L,xd);
+dLdPyd = diff(L,yd);
+dLdPzd = diff(L,zd);
+
+dtdLdPxd = diff(dLdPxd,t)
+dtdLdPyd = diff(dLdPyd,t)
+dtdLdPzd = diff(dLdPzd,t)
+
+dtdLdTita1d = diff(dLdTita1d,t)
+dtdLdTita2d = diff(dLdTita2d,t)
+dtdLdTita3d = diff(dLdTita3d,t)
+
+%Agregar ecuaciones de restriccion y ver que "multiplicadores de lagrange"
