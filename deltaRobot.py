@@ -182,7 +182,7 @@ class RobotDelta ():
         
         print('Fin de la funcion Cinematica Directa')
         
-        return x ,y, z
+        return x_negative ,y_negative, z_negative
     
     def inverse_Kinematics(self,x,y,z):
         
@@ -238,6 +238,10 @@ class RobotDelta ():
         return th1,th2,th3
 
 
+    def plotModel(self,theta1,theta2,theta3):
+        pass
+        
+
 if __name__ == '__main__':
     
     Robot=RobotDelta()
@@ -281,8 +285,8 @@ if __name__ == '__main__':
     theta_max = -1.3
     theta = np.linspace(-1, theta_max, 1000)
     z = theta
-    x =  np.sin(theta*np.pi*10)*0.6
-    y =  np.cos(theta*np.pi*10)*0.6
+    x =  np.sin(theta*np.pi*10)*0.5
+    y =  np.cos(theta*np.pi*10)*0.5
     ax.plot(x, y, z, 'b', lw=2)
 
     # plt.show()
@@ -329,6 +333,12 @@ if __name__ == '__main__':
         
 
     plt.show()
+    
+    # for i in range(len(angle1)):
+        
+    #     Robot.plotModel(angle1[i], angle2[i], angle3[i])
+    
+
 
 
 
