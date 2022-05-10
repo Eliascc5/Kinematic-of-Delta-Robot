@@ -153,15 +153,15 @@ dR3dPy = diff(R3,y)
 dR3dPz = diff(R3,z)
 
 dR1dTita1 = diff(R1,tita1)
-dR1dTita1 = diff(R1,tita1)
-dR1dTita1 = diff(R1,tita1)
+dR1dTita1 = diff(R1,tita2) % = 0
+dR1dTita1 = diff(R1,tita3) % = 0
 
+dR2dTita2 = diff(R2,tita1) % = 0
 dR2dTita2 = diff(R2,tita2)
-dR2dTita2 = diff(R2,tita2)
-dR2dTita2 = diff(R2,tita2)
+dR2dTita2 = diff(R2,tita3) % = 0
 
-dR3dTita3 = diff(R3,tita3)
-dR3dTita3 = diff(R3,tita3)
+dR3dTita3 = diff(R3,tita1) % = 0
+dR3dTita3 = diff(R3,tita2) % = 0
 dR3dTita3 = diff(R3,tita3)
 
 %Obtencion de los mmultiplicadores de lagrange
