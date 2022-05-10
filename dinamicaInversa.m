@@ -132,4 +132,36 @@ dtdLdTita1d = diff(dLdTita1d,t)
 dtdLdTita2d = diff(dLdTita2d,t)
 dtdLdTita3d = diff(dLdTita3d,t)
 
-%Agregar ecuaciones de restriccion y ver que "multiplicadores de lagrange"
+%Ecuaciones de restriccion
+
+R1 =  2*L*(y(t)+a)*cos(tita1(t)) + 2*z(t)*L*sin(tita1(t))+ x(t)^2 + y(t)^2 + z(t)^2 + a^2 + L^2 + 2*y(t)*a - l_2 
+R2 = -L*(sqrt(3)*(x(t)+b) + y(t) + c)*cos(tita2(t)) + 2*z(t)*L*sin(tita2(t))+ x(t)^2 + y(t)^2 + z(t)^2 + b^2 + c^2 + L^2 + 2*x(t)*b + 2*y(t)*c - l_2
+R3 = L*(sqrt(3)*(x(t)-b) - y(t) - c)*cos(tita3(t)) + 2*z(t)*L*sin(tita3(t))+ x(t)^2 + y(t)^2 + z(t)^2 + b^2 + c^2 + L^2 - 2*x(t)*b + 2*y(t)*c - l_2
+
+%Derivamos cada una de las ecuaciones de restriccion respecto de las 6 coordenadas generalizadas
+
+dR1dPx = diff(R1,x)
+dR1dPy = diff(R1,y)
+dR1dPz = diff(R1,z)
+
+dR2dPx = diff(R2,x)
+dR2dPy = diff(R2,y)
+dR2dPz = diff(R2,z)
+
+dR3dPx = diff(R3,x)
+dR3dPy = diff(R3,y)
+dR3dPz = diff(R3,z)
+
+dR1dTita1 = diff(R1,tita1)
+dR1dTita1 = diff(R1,tita1)
+dR1dTita1 = diff(R1,tita1)
+
+dR2dTita2 = diff(R2,tita2)
+dR2dTita2 = diff(R2,tita2)
+dR2dTita2 = diff(R2,tita2)
+
+dR3dTita3 = diff(R3,tita3)
+dR3dTita3 = diff(R3,tita3)
+dR3dTita3 = diff(R3,tita3)
+
+%Obtencion de los mmultiplicadores de lagrange
