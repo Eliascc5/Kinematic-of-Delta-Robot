@@ -169,28 +169,12 @@ dR3dTita3 = diff(R3,tita3);
 
 %Pierna 1 
 
-lambda1x = (dtdLdPxd - dLdPx)./ dR1dPx ;
-
-lambda1y = (dtdLdPyd - dLdPy)./ dR1dPy ;
-
-lambda1z = (dtdLdPzd - dLdPz)./ dR1dPz ;
 
 %Pierna 2
 
-lambda2x = (dtdLdPxd - dLdPx)./ dR2dPx ;
-
-lambda2y = (dtdLdPyd - dLdPy)./ dR2dPy ;
-
-lambda2z = (dtdLdPzd - dLdPz)./ dR2dPz ;
 
 
 %Pierna 3 
-
-lambda3x = (dtdLdPxd - dLdPx)./ dR3dPx ;
-
-lambda3y = (dtdLdPyd - dLdPy)./ dR3dPy ;
-
-lambda3z = (dtdLdPzd - dLdPz)./ dR3dPz ;
 
 
 %Ecuaciones de torques (Revisar los lambda) evaluar los valores
