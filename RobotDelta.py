@@ -65,6 +65,10 @@ class RobotDelta ():
         
     def setCoord(self,_x,_y,_z):
         self.x,self.y,self.z=_x,_y,_z
+        
+    def getCoord(self):
+        return self.x,self.y,self.z
+    
 
     def setCoordArt(self,_theta1,_theta2,_theta3):
         
@@ -307,53 +311,53 @@ class RobotDelta ():
 
         return self.triangulo,self.eslabon1,self.triangulo_f,self.eslabon2
 
-Robot = RobotDelta()
+# Robot = RobotDelta()
 
 
 
-fig = plt.figure()
-ax = fig.add_subplot(projection='3d')
+# fig = plt.figure()
+# ax = fig.add_subplot(projection='3d')
 
 
-ang1=np.arange(-40*DEG_TO_RAD,20*DEG_TO_RAD,0.75*DEG_TO_RAD)
-ang2=np.arange(-10*DEG_TO_RAD,50*DEG_TO_RAD,0.75*DEG_TO_RAD)
-ang3=np.arange(0*DEG_TO_RAD,60*DEG_TO_RAD,0.75*DEG_TO_RAD)
+# ang1=np.arange(-40*DEG_TO_RAD,20*DEG_TO_RAD,0.75*DEG_TO_RAD)
+# ang2=np.arange(-10*DEG_TO_RAD,50*DEG_TO_RAD,0.75*DEG_TO_RAD)
+# ang3=np.arange(0*DEG_TO_RAD,60*DEG_TO_RAD,0.75*DEG_TO_RAD)
 
 
-i=0
+# i=0
 
-while i <len(ang1):
+# while i <len(ang1):
 
-    x,y,z_neg = Robot.forward_Kinematics(ang1[i], ang2[i], ang3[i])
+#     x,y,z_neg = Robot.forward_Kinematics(ang1[i], ang2[i], ang3[i])
     
-    Robot.setCoord(x, y, z_neg)
-    Robot.setCoordArt(ang1[i], ang2[i], ang3[i])
+#     Robot.setCoord(x, y, z_neg)
+#     Robot.setCoordArt(ang1[i], ang2[i], ang3[i])
     
-    triangulo,eslabon1,triangulo_f,eslabon2 = Robot.getModel()
+#     triangulo,eslabon1,triangulo_f,eslabon2 = Robot.getModel()
     
-    ax.cla()
-    ax.set_xlim3d(-0.5, 0.5)
-    ax.set_ylim3d(-0.5, 0.5)
-    ax.set_zlim3d(-1.5, 2)
+#     ax.cla()
+#     ax.set_xlim3d(-0.5, 0.5)
+#     ax.set_ylim3d(-0.5, 0.5)
+#     ax.set_zlim3d(-1.5, 2)
     
 
 
-    idx=0
+#     idx=0
     
-    ax.plot3D(triangulo[0,idx,:], triangulo[0,idx+1,:], triangulo[0,idx+2,:],'red')
-    ax.plot3D(triangulo[1,idx,:], triangulo[1,idx+1,:], triangulo[1,idx+2,:],'red')
-    ax.plot3D(triangulo[2,idx,:], triangulo[2,idx+1,:], triangulo[2,idx+2,:],'red')
+#     ax.plot3D(triangulo[0,idx,:], triangulo[0,idx+1,:], triangulo[0,idx+2,:],'red')
+#     ax.plot3D(triangulo[1,idx,:], triangulo[1,idx+1,:], triangulo[1,idx+2,:],'red')
+#     ax.plot3D(triangulo[2,idx,:], triangulo[2,idx+1,:], triangulo[2,idx+2,:],'red')
   
-    for j in range(3):
+#     for j in range(3):
 
-        # ax.plot3D(triangulo[j,idx,:], triangulo[j,idx+1,:], triangulo[j,idx+2,:],'red')
-        ax.plot3D(eslabon1[j,idx,:], eslabon1[j,idx+1,:], eslabon1[j,idx+2,:],'green')
-        ax.plot3D(triangulo_f[j,idx,:], triangulo_f[j,idx+1,:], triangulo_f[j,idx+2,:],'blue')
-        ax.plot3D(eslabon2[j,idx,:], eslabon2[j,idx+1,:], eslabon2[j,idx+2,:],'red')
+#         # ax.plot3D(triangulo[j,idx,:], triangulo[j,idx+1,:], triangulo[j,idx+2,:],'red')
+#         ax.plot3D(eslabon1[j,idx,:], eslabon1[j,idx+1,:], eslabon1[j,idx+2,:],'green')
+#         ax.plot3D(triangulo_f[j,idx,:], triangulo_f[j,idx+1,:], triangulo_f[j,idx+2,:],'blue')
+#         ax.plot3D(eslabon2[j,idx,:], eslabon2[j,idx+1,:], eslabon2[j,idx+2,:],'red')
 
 
-        plt.pause(0.001)
+#         plt.pause(0.001)
         
-    i = i+1
+#     i = i+1
 
 
