@@ -13,7 +13,7 @@ class RobotDelta ():
     def __init__(self):
         
         #Parametros constructivos
-        #Longitudes del roboty
+        #Longitudes del robot
 
         
         self.Sb=0.581        #Base equilateral triangle side
@@ -22,21 +22,16 @@ class RobotDelta ():
         self.L = 0.4         #Upper legs length
         self.l = 0.6         #Lower legs parallelogram length
         self.h = 0.131       #Lower legs parallelogram width
-        
-        
-        self.x=0
-        self.y=0
-        self.z=-0.5
-        
-        self.theta1 = 0
-        self.theta2 = 0
-        self.theta3 = 0
-        
+           
         self.wb=(math.sqrt(3)/6)*self.Sb            #Planar distance from {0} to near base side
         self.ub=(math.sqrt(3)/3)*self.Sb            #Planar distance from {0} to a base vertex 
         self.wp=(math.sqrt(3)/6)*self.Sp            #Planar distance from {P} to near platform side
         self.up=(math.sqrt(3)/3)*self.Sp            #Planar distance from {P} to a platform vertex
-                
+        
+        self.a = self.wb-self.up
+        self.b = self.Sp/2-(math.sqrt(3)/2)*self.wb
+        self.c = self.wp-0.5*self.wb
+        
         #Coordenadas de la posocion de los motores
         self.BB = np.array([[0,-self.wb,0],[(math.sqrt(3)/2)*self.wb,1/2*self.wb,0],[-(math.sqrt(3)/2)*self.wb,1/2*self.wb,0]])
         
@@ -44,22 +39,23 @@ class RobotDelta ():
         self.verticesTriangleBase = np.array([[self.Sb/2,-self.wb,0],[0,self.ub,0], [-self.Sb/2, -self.wb, 0]])
         
 
-
         self.P1=np.array([0,-self.up,0])
         self.P2=np.array([self.Sp/2,self.wp,0])
         self.P3=np.array([-self.Sp/2,self.wp,0])
             
-    
-        self.a = self.wb-self.up
-        self.b = self.Sp/2-(math.sqrt(3)/2)*self.wb
-        self.c = self.wp-0.5*self.wb
+        #Posicion inicial 
+        self.x=0
+        self.y=0
+        self.z=-0.5
         
-        
+        self.theta1,self.theta2,self.theta3 = self.inverse_Kinematics(self.x, self.y, self.z)
+
         ###########################################
         dim = 50
+        
+        
         self.triangulo = np.zeros((3,3,dim))
         self.triangulo_f = np.zeros((3,3,dim))
-        
         self.eslabon1 = np.zeros((3,3,dim))
         self.eslabon2 = np.zeros((3,3,dim))
         
@@ -73,7 +69,11 @@ class RobotDelta ():
     def setCoordArt(self,_theta1,_theta2,_theta3):
         
         self.theta1,self.theta2,self.theta3 = _theta1,_theta2,_theta3
-  
+        print("los anguloss", self.theta1,self.theta2,self.theta3)
+        
+    def getCoordArt(self):
+        return  self.theta1,self.theta2,self.theta3       
+        
     def forward_Kinematics(self,theta1, theta2,theta3):
 
         
@@ -280,13 +280,14 @@ class RobotDelta ():
         # print("theta3 positive:",theta3_p * RAD_TO_DEF)  #Non valid
         # print("theta3 :",theta3_n * RAD_TO_DEF)          #kinked out solution   
         
-        return theta1 * RAD_TO_DEF,theta2 * RAD_TO_DEF,theta3 * RAD_TO_DEF
+        return theta1 ,theta2 ,theta3 
     
     def getModel(self):
         
-
         
-        Lin = np.array([[0,-self.L*math.cos(self.theta1),-self.L*math.sin(self.theta1)],[(math.sqrt(3)/2)*self.L*math.cos(self.theta2),0.5*self.L*math.cos(self.theta2),-self.L*math.sin(self.theta2)],[-(math.sqrt(3)/2)*self.L*math.cos(self.theta3),0.5*self.L*math.cos(self.theta3),-self.L*math.sin(self.theta3)]])
+        Lin = np.array([[0,-self.L*(math.cos(self.theta1)),-self.L*math.sin(self.theta1)],
+                        [(math.sqrt(3)/2)*self.L*(math.cos(self.theta2)),0.5*self.L*(math.cos(self.theta2)),-self.L*math.sin(self.theta2)],
+                        [-(math.sqrt(3)/2)*self.L*(math.cos(self.theta3)),0.5*self.L*(math.cos(self.theta3)),-self.L*math.sin(self.theta3)]])
 
         Pp = np.array([[0+self.x,-self.up+self.y,0+self.z],[self.Sp/2+self.x,self.wp+self.y,0+self.z],[-self.Sp/2+self.x,self.wp+self.y,0+self.z]])     
 
@@ -320,7 +321,7 @@ class RobotDelta ():
 
 
 # ang1=np.arange(-40*DEG_TO_RAD,20*DEG_TO_RAD,0.75*DEG_TO_RAD)
-# ang2=np.arange(-10*DEG_TO_RAD,50*DEG_TO_RAD,0.75*DEG_TO_RAD)
+# ang2=np.arange(-30*DEG_TO_RAD,30*DEG_TO_RAD,0.75*DEG_TO_RAD)
 # ang3=np.arange(0*DEG_TO_RAD,60*DEG_TO_RAD,0.75*DEG_TO_RAD)
 
 
@@ -361,3 +362,52 @@ class RobotDelta ():
 #     i = i+1
 
 
+#####################################################################
+
+
+# Robot = RobotDelta()
+
+
+
+# fig = plt.figure()
+# ax = fig.add_subplot(projection='3d')
+
+# # x=np.linspace(-0.1,0.2,50)
+# # y=np.linspace(-0.1,0.2,50)
+# # z=np.linspace(-0.7,-0.7,50)
+
+# x=np.linspace(0,0,50)
+# y=np.linspace(0,0,50)
+# z=np.linspace(-0.7,-0.2,50)
+# i=0
+
+# while i <len(x):
+
+#     th1,th2,th3 = Robot.inverse_Kinematics(x[i], y[i], z[i])
+#     Robot.setCoordArt(th1, th2, th3)
+#     Robot.setCoord(x[i], y[i], z[i])
+
+    
+    
+#     triangulo,eslabon1,triangulo_f,eslabon2 = Robot.getModel()
+    
+#     ax.cla()
+#     ax.set_xlim3d(-0.5, 0.5)
+#     ax.set_ylim3d(-0.5, 0.5)
+#     ax.set_zlim3d(-1.5, 2)
+    
+
+
+#     idx=0
+    
+#     for j in range(3):
+
+#         ax.plot3D(triangulo[j,idx,:], triangulo[j,idx+1,:], triangulo[j,idx+2,:],'red')
+#         ax.plot3D(eslabon1[j,idx,:], eslabon1[j,idx+1,:], eslabon1[j,idx+2,:],'green')
+#         ax.plot3D(triangulo_f[j,idx,:], triangulo_f[j,idx+1,:], triangulo_f[j,idx+2,:],'blue')
+#         ax.plot3D(eslabon2[j,idx,:], eslabon2[j,idx+1,:], eslabon2[j,idx+2,:],'red')
+
+
+#         plt.pause(0.1)
+        
+#     i = i+1

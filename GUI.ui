@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>289</width>
-    <height>454</height>
+    <width>405</width>
+    <height>472</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,50 +20,56 @@
    <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
-      <x>60</x>
-      <y>20</y>
+      <x>90</x>
+      <y>10</y>
       <width>161</width>
       <height>31</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
     </property>
     <property name="text">
      <string>SIMULADOR ROBOT DELTA</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton">
+   <widget class="QPushButton" name="demoButton">
     <property name="geometry">
      <rect>
-      <x>90</x>
-      <y>90</y>
+      <x>150</x>
+      <y>60</y>
       <width>75</width>
       <height>23</height>
      </rect>
     </property>
     <property name="text">
-     <string>Start</string>
+     <string>Demo</string>
     </property>
    </widget>
    <widget class="QWidget" name="verticalLayoutWidget">
     <property name="geometry">
      <rect>
-      <x>40</x>
-      <y>210</y>
+      <x>220</x>
+      <y>330</y>
       <width>160</width>
       <height>89</height>
      </rect>
     </property>
-    <layout class="QVBoxLayout" name="verticalLayout">
+    <layout class="QVBoxLayout" name="cartesianCoordButtons">
      <item>
-      <layout class="QHBoxLayout" name="horizontalLayout">
+      <layout class="QHBoxLayout" name="axeXbuttons">
        <item>
-        <widget class="QPushButton" name="Button_xp_2">
+        <widget class="QPushButton" name="xpButton">
          <property name="text">
           <string>+X</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="Button_xp">
+        <widget class="QPushButton" name="xnButton">
          <property name="text">
           <string>-X</string>
          </property>
@@ -72,16 +78,16 @@
       </layout>
      </item>
      <item>
-      <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <layout class="QHBoxLayout" name="axeYbuttons">
        <item>
-        <widget class="QPushButton" name="pushButton_6">
+        <widget class="QPushButton" name="ypButton">
          <property name="text">
           <string>+Y</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton_7">
+        <widget class="QPushButton" name="ynButton">
          <property name="text">
           <string>-Y</string>
          </property>
@@ -90,18 +96,110 @@
       </layout>
      </item>
      <item>
-      <layout class="QHBoxLayout" name="horizontalLayout_3">
+      <layout class="QHBoxLayout" name="axeZbuttons">
        <item>
-        <widget class="QPushButton" name="pushButton_8">
+        <widget class="QPushButton" name="zpButton">
          <property name="text">
           <string>+Z</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton_9">
+        <widget class="QPushButton" name="znButton">
          <property name="text">
           <string>-Z</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QLabel" name="label_2">
+    <property name="geometry">
+     <rect>
+      <x>240</x>
+      <y>310</y>
+      <width>131</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Movimientos cartesianos : </string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_3">
+    <property name="geometry">
+     <rect>
+      <x>50</x>
+      <y>300</y>
+      <width>111</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Movmientos aticulares :</string>
+    </property>
+   </widget>
+   <widget class="QWidget" name="verticalLayoutWidget_2">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>330</y>
+      <width>160</width>
+      <height>86</height>
+     </rect>
+    </property>
+    <layout class="QVBoxLayout" name="slidersArt">
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
+        <widget class="QLabel" name="label_4">
+         <property name="text">
+          <string>q1</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QSlider" name="horizontalSlider">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_3">
+       <item>
+        <widget class="QLabel" name="label_6">
+         <property name="text">
+          <string>q3</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QSlider" name="horizontalSlider_3">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <item>
+        <widget class="QLabel" name="label_5">
+         <property name="text">
+          <string>q2</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QSlider" name="horizontalSlider_2">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
          </property>
         </widget>
        </item>
@@ -115,7 +213,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>289</width>
+     <width>405</width>
      <height>21</height>
     </rect>
    </property>
