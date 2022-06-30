@@ -38,6 +38,7 @@ class RobotDelta ():
         #Vertices of the base equilateral triangle
         self.verticesTriangleBase = np.array([[self.Sb/2,-self.wb,0],[0,self.ub,0], [-self.Sb/2, -self.wb, 0]])
         
+        
 
         self.P1=np.array([0,-self.up,0])
         self.P2=np.array([self.Sp/2,self.wp,0])
@@ -46,13 +47,12 @@ class RobotDelta ():
         #Posicion inicial 
         self.x=0
         self.y=0
-        self.z=-0.5
+        self.z=-0.334658034417224
         
         self.theta1,self.theta2,self.theta3 = self.inverse_Kinematics(self.x, self.y, self.z)
-
+        
         ###########################################
         dim = 50
-        
         
         self.triangulo = np.zeros((3,3,dim))
         self.triangulo_f = np.zeros((3,3,dim))
@@ -282,6 +282,22 @@ class RobotDelta ():
         
         return theta1 ,theta2 ,theta3 
     
+    def inverseJacobian(self,x,y,z,velx, vely,velz):
+        
+      
+        A=np.array([[x, y+self.a+self.L*math.cos(theta1),z+self.L*math.sin(theta1)],
+        [2*(x+self.b)-math.sqrt(3)*self.L*math.cos(theta2), 2*(y+self.c)-self.L*math.cos(theta2), 2*(z+self.L*math.sin(theta2))],
+        [2*(x-self.b)+math.sqrt(3)*self.L*math.cos(theta3), 2*(y+self.c)-self.L*math.cos(theta3), 2*(z+self.L*math.sin(theta3))]])
+     
+       
+        b11 = self.L*((y+self.a)*math.sin(theta1)-z*math.cos(theta1))
+        b22 =-self.L*((math.sqrt(3)*(x+self.b)+y+self.c)*math.sin(theta2)+2*z*math.cos(theta2))
+        b33 = self.L*((math.sqrt(3)*(x-self.b)-y-self.c)*math.sin(theta3)-2*z*math.cos(theta3))
+        
+        B=np.array([[b11,0,0],[0,b22,0],[0,0,b33]])
+        
+        #A Xdot = B thetaDot
+        
     def getModel(self):
         
         
@@ -365,7 +381,7 @@ class RobotDelta ():
 #####################################################################
 
 
-# Robot = RobotDelta()
+Robot = RobotDelta()
 
 
 
