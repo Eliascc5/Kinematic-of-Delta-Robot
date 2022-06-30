@@ -112,10 +112,15 @@ t_final = 1 #seg
 
 pos,vel,acel = trayectoria_pol5(_q0,_qf,t_init,t_final)
 
+t = np.linspace(t_init,t_final,PuntosTime)
 
 q1=[]
 q2=[]
 q3=[]
+
+omega1=[]
+omega2=[]
+omega3=[]
 
 for i in range(len(pos[0][:])):
     
@@ -124,7 +129,12 @@ for i in range(len(pos[0][:])):
     q2.append(_q2*RAD_TO_DEF)
     q3.append(_q3*RAD_TO_DEF)
 
-t = np.linspace(t_init,t_final,PuntosTime)
+for i in range(len(pos[0][:])):
+    
+    omegas = Robot.inverseJacobian(pos[0][i], pos[1][i], pos[2][i], vel[0][i], vel[1][i], vel[2][i])
+    omega1.append(omegas[0]*RAD_TO_DEF)
+    omega2.append(omegas[1]*RAD_TO_DEF)
+    omega3.append(omegas[2]*RAD_TO_DEF)
 
 
 
@@ -155,22 +165,15 @@ plt.legend()
 plt.show()
 
     
-# plt.figure()
-# plt.title('Velocidades articulares')
-# for i in range(len(q)):
-#     plt.plot(t,qd[i], label =f'qd{i}')
-# plt.xlabel('tiempo')
-# plt.ylabel('Vel angular en grados/s')
-# plt.legend()
-# plt.show()
+plt.figure()
+plt.title('Velocidades articulares')
+plt.plot(t,omega1, label='omega1')
+plt.plot(t,omega2, label='omega2')
+plt.plot(t,omega3, label='omega3')
+plt.xlabel('tiempo')
+plt.ylabel('Vel angular en grados/s')
+plt.legend()
+plt.show()
 
 
-# plt.figure()
-# plt.title('Aceleraciones articulares')
-# for i in range(len(q)):    
-#     plt.plot(t,qdd[i], label =f'qdd{i}')
-# plt.xlabel('tiempo')
-# plt.ylabel('Acel angular en grados/s2')    
-# plt.legend()
-# plt.show()
-    
+
