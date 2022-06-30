@@ -5,11 +5,21 @@ Created on Tue May 17 17:15:08 2022
 @author: EliasC
 """
 
-
+from mpl_toolkits.mplot3d import Axes3D
 import numpy as np
 import matplotlib.pyplot as plt
 import math
 
+RAD_TO_DEF = 180/math.pi
+
+from RobotDelta import RobotDelta
+
+import math
+DEG_TO_RAD = math.pi/180
+
+Robot = RobotDelta()
+
+PuntosTime = 10
 
 
 def trayectoria_pol3(q0=[None],qf=[None], ti=0 ,tf=1):
@@ -54,13 +64,13 @@ def trayectoria_pol5(q0=[None],qf=[None], ti=0 ,tf=1):
     
     coef = np.zeros((nroArt,nroCoef))
     
-    t = np.linspace(ti,tf,1000)
+    t = np.linspace(ti,tf,PuntosTime)
 
     #Matriz de coeficientes del polinomio
     i=0 
     
     qd0 =[0,0,0]  #Velocidad inicial
-    qdf =[5,0,-5] #Velocidad final
+    qdf =[1,1,1] #Velocidad final
     qdd0 =[0,0,0] #Aceleracion inicial
     qddf =[0,0,0] #Aceleracion final
     
@@ -92,45 +102,75 @@ def trayectoria_pol5(q0=[None],qf=[None], ti=0 ,tf=1):
     return q, qd, qdd
 
 
-_q0 = [36.96,-11.13,-11.13]
+_q0 = [0,0,-0.5]
+_qf = [0.1,0.1,-0.4]
 
-_qf = [21.11,-5.60,43.83]
-
+Robot = RobotDelta()
 
 t_init = 0
-t_final = 5 #seg
+t_final = 1 #seg
 
-q,qd,qdd = trayectoria_pol5(_q0,_qf,t_init,t_final)
+pos,vel,acel = trayectoria_pol5(_q0,_qf,t_init,t_final)
 
-t = np.linspace(t_init,t_final,1000)
+
+q1=[]
+q2=[]
+q3=[]
+
+for i in range(len(pos[0][:])):
+    
+    _q1,_q2,_q3 = Robot.inverse_Kinematics(pos[0][i], pos[1][i], pos[2][i])
+    q1.append(_q1*RAD_TO_DEF)
+    q2.append(_q2*RAD_TO_DEF)
+    q3.append(_q3*RAD_TO_DEF)
+
+t = np.linspace(t_init,t_final,PuntosTime)
+
+
+
+fig = plt.figure()
+ax = fig.add_subplot(111, projection='3d')
+ax.plot3D(pos[0],pos[1],pos[2], label='Posicion XYZ')
+ax.legend()
+plt.show()
+
+
+fig = plt.figure()
+ax = fig.add_subplot(111, projection='3d')
+ax.plot3D(vel[0],vel[1],vel[2], label='Velocidad XYZ')
+ax.legend()
+plt.show()
+
 
 
 plt.figure()
-plt.title('Posiciones articulares')
-for i in range(len(q)):
-    plt.plot(t,q[i],label =f'q{i}')
+plt.title('Coordenadas articulares')
+plt.plot(t,q1, label='tita1')
+plt.plot(t,q2, label='tita2')
+plt.plot(t,q3, label='tita3')
+
 plt.xlabel('tiempo')
 plt.ylabel('Pos angular en grados')
 plt.legend()
 plt.show()
 
     
-plt.figure()
-plt.title('Velocidades articulares')
-for i in range(len(q)):
-    plt.plot(t,qd[i], label =f'qd{i}')
-plt.xlabel('tiempo')
-plt.ylabel('Vel angular en grados/s')
-plt.legend()
-plt.show()
+# plt.figure()
+# plt.title('Velocidades articulares')
+# for i in range(len(q)):
+#     plt.plot(t,qd[i], label =f'qd{i}')
+# plt.xlabel('tiempo')
+# plt.ylabel('Vel angular en grados/s')
+# plt.legend()
+# plt.show()
 
 
-plt.figure()
-plt.title('Aceleraciones articulares')
-for i in range(len(q)):    
-    plt.plot(t,qdd[i], label =f'qdd{i}')
-plt.xlabel('tiempo')
-plt.ylabel('Acel angular en grados/s2')    
-plt.legend()
-plt.show()
+# plt.figure()
+# plt.title('Aceleraciones articulares')
+# for i in range(len(q)):    
+#     plt.plot(t,qdd[i], label =f'qdd{i}')
+# plt.xlabel('tiempo')
+# plt.ylabel('Acel angular en grados/s2')    
+# plt.legend()
+# plt.show()
     
