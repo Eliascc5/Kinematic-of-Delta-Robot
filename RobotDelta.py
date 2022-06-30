@@ -6,7 +6,7 @@ Created on Fri Apr 22 15:02:11 2022
 """
 
 from libraries import *
-
+from numpy.linalg import inv
 
 class RobotDelta ():
     
@@ -279,24 +279,33 @@ class RobotDelta ():
         # print("--------------")
         # print("theta3 positive:",theta3_p * RAD_TO_DEF)  #Non valid
         # print("theta3 :",theta3_n * RAD_TO_DEF)          #kinked out solution   
-        
+
         return theta1 ,theta2 ,theta3 
     
     def inverseJacobian(self,x,y,z,velx, vely,velz):
         
+        vel = np.array([velx,vely,velz])
+        
+        th1,th2,th3 = self.inverse_Kinematics(x, y, z)
+        
+        print("en jacobian",th1)
       
-        A=np.array([[x, y+self.a+self.L*math.cos(theta1),z+self.L*math.sin(theta1)],
-        [2*(x+self.b)-math.sqrt(3)*self.L*math.cos(theta2), 2*(y+self.c)-self.L*math.cos(theta2), 2*(z+self.L*math.sin(theta2))],
-        [2*(x-self.b)+math.sqrt(3)*self.L*math.cos(theta3), 2*(y+self.c)-self.L*math.cos(theta3), 2*(z+self.L*math.sin(theta3))]])
+        A=np.array([[x, y+self.a+self.L*math.cos(th1),z+self.L*math.sin(th1)],
+        [2*(x+self.b)-math.sqrt(3)*self.L*math.cos(th2), 2*(y+self.c)-self.L*math.cos(th2), 2*(z+self.L*math.sin(th2))],
+        [2*(x-self.b)+math.sqrt(3)*self.L*math.cos(th3), 2*(y+self.c)-self.L*math.cos(th3), 2*(z+self.L*math.sin(th3))]])
      
        
-        b11 = self.L*((y+self.a)*math.sin(theta1)-z*math.cos(theta1))
-        b22 =-self.L*((math.sqrt(3)*(x+self.b)+y+self.c)*math.sin(theta2)+2*z*math.cos(theta2))
-        b33 = self.L*((math.sqrt(3)*(x-self.b)-y-self.c)*math.sin(theta3)-2*z*math.cos(theta3))
+        b11 = self.L*((y+self.a)*math.sin(th1)-z*math.cos(th1))
+        b22 =-self.L*((math.sqrt(3)*(x+self.b)+y+self.c)*math.sin(th2)+2*z*math.cos(th2))
+        b33 = self.L*((math.sqrt(3)*(x-self.b)-y-self.c)*math.sin(th3)-2*z*math.cos(th3))
         
         B=np.array([[b11,0,0],[0,b22,0],[0,0,b33]])
         
-        #A Xdot = B thetaDot
+        
+        omegas = (inv(B)*A)*vel
+        
+        return np.diagonal(omegas)
+
         
     def getModel(self):
         
